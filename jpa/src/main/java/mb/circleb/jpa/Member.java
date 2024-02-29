@@ -12,9 +12,10 @@ import jakarta.persistence.*;
 @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
+@Table(name="tb_member")
 public class Member {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String name;
@@ -32,7 +33,6 @@ public class Member {
         this.team.getMemberList().remove(this);
         this.team.getMemberList().add(this);
     }
-
 
     @Override
     public String toString() {

@@ -1,12 +1,13 @@
 package Chapter01.P02;
 
-import javax.xml.stream.events.Characters;
-import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
+/**
+ * 반복되지 않는 첫 번쨰 문자 찾기
+ */
 public class Main {
 
 
@@ -64,8 +65,21 @@ public class Main {
         return Character.MIN_VALUE;
     }
 
-    public static String firstNonRepeatedCharacter_lamda(String str){
-        Map<Integer, Long> chs = str.codePoints().collect(Collectors.groupingBy(Function.identity(), LinkedHashMap::new, Collectors.counting()));
+
+    /**
+     * firstNonRepeatedCharacter_LinkedHashMap를 함수형 스타일로 작성
+     * @param str
+     * @return
+     */
+    public static String firstNonRepeatedCharacter_functional(String str){
+        Map<Integer, Long> chs = str.codePoints()
+                                    .boxed()
+//                                    .mapToObj(cp -> cp)
+                                    .collect(Collectors.groupingBy(Function.identity(), LinkedHashMap::new, Collectors.counting()));
+
+
+
+
         int cp = chs.entrySet().stream()
                 .filter(e-> e.getValue()==1L)
                 .findFirst()
@@ -76,12 +90,9 @@ public class Main {
     }
 
     public static void main(String[] args) {
-
-
         String value = "zasdfjklsadfjklsadaap123123";
         System.out.println(firstNonRepeatedCharacter(value));
         System.out.println("firstNonRepeatedCharacter_LinkedHashMap: " + firstNonRepeatedCharacter_LinkedHashMap(value));
-
-
+        System.out.println("firstNonRepeatedCharacter_functional: " + firstNonRepeatedCharacter_functional(value));
     }
 }

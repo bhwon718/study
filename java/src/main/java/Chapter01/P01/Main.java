@@ -4,6 +4,10 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+
+/**
+ * 문자 개수 세기
+ */
 public class Main {
 
     //문자를 순회하여 처리

@@ -1,9 +1,9 @@
 package mb.circleb.jpa;
 
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.EntityManagerFactory;
-import jakarta.persistence.EntityTransaction;
-import jakarta.persistence.Persistence;
+
+import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.List;
 
@@ -21,9 +21,7 @@ public class JpaMain {
 
         try {
             tx.begin(); //트랜잭션 시작
-            save(em);
             logic(em);  //비즈니스 로직
-//            logic2(em);  //비즈니스 로직
             tx.commit();//트랜잭션 커밋
         } catch (Exception e) {
             e.printStackTrace();
@@ -35,31 +33,35 @@ public class JpaMain {
         emf.close(); //엔티티 매니저 팩토리 종료
     }
 
-    private static void save(EntityManager em) {
-        Team team = new Team();
-        team.setName("팀등록");
-        em.persist(team);
-    }
-
-
     public static void logic(EntityManager em) {
+        //update tb_item set price = 1001 where id = 1
+        em.setFlushMode(FlushModeType.COMMIT);
+        Item item = em.find(Item.class, 1L);
 
-//        String sql = "select m from Member  m inner join m.team t where m.name like '이름%'";
-        String sql = "select t from Team t join fetch t.memberList where t.name like 'TEAM A'";
-        List<Team> teamList = em.createQuery(sql, Team.class).getResultList();
-        teamList.forEach(System.out::println);
+        item.setPrice(1000L);
+
+        System.out.println("item 1 : " + item);
+        System.out.println("item 1 : " + item.hashCode());
+
+
+        em.flush(); //1 em.flush() 직접호출
+
+        // FlushModeType.COMMIT 일경우 위에서 변경한 price 금액이 아직 DB에 반영되지 않았기때문에 데이터 가 조회 되지 않는다
+        List<Item> itemList = em.createQuery("select i from Item i where i.price <= 1000", Item.class)
+                                .setFlushMode(FlushModeType.AUTO) // setFlushMode  설정
+                                .getResultList();
+
+        System.out.println("item 2 : " + (!itemList.isEmpty() ? itemList.get(0) : null));
+        System.out.println("item 2 : " + (!itemList.isEmpty() ? itemList.get(0).hashCode() : null));
 
     }
 
-    public static void logic2(EntityManager em) {
 
-        List<Member> memberList = em.createQuery("Select m From Member m where m.name = :name", Member.class)
-                .setParameter("name", "이름1")
-                .setFirstResult(10)
-                .setMaxResults(20)
-                .getResultList();
-        memberList.forEach(System.out::println);
-    }
+}
 
-
+@Getter
+@Setter
+class SearchParam {
+    private String name;
+    private Long price;
 }
