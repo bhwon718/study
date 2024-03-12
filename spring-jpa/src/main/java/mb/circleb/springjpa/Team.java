@@ -1,4 +1,4 @@
-package mb.circleb.springjpa.springjpa;
+package mb.circleb.springjpa;
 
 import jakarta.persistence.*;
 import lombok.Getter;

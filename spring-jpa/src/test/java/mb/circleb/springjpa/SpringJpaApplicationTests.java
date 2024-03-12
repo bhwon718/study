@@ -1,4 +1,4 @@
-package mb.circleb.springjpa.springjpa;
+package mb.circleb.springjpa;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

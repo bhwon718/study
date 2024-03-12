@@ -1,18 +1,20 @@
-package mb.circleb.springjpa.springjpa;
+package mb.circleb.springjpa;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
-import lombok.Getter;
-import lombok.Setter;
+import jakarta.persistence.Version;
+import lombok.Data;
 
-@Getter
-@Setter
+@Data
 @Entity
-public class Member {
-    
+public class Board {
+
     @Id
     @GeneratedValue
     private Long id;
     private String name;
+
+    @Version
+    private Integer version;
 }
