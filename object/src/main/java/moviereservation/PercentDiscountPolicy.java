@@ -1,15 +1,15 @@
 package moviereservation;
 
-public class PercentDiscountPolicy extends DiscountPolicy {
+public class PercentDiscountPolicy implements DiscountPolicy {
     private final double percent;
 
     public PercentDiscountPolicy(double percent, DiscountCondition... conditions) {
-        super(conditions);
         this.percent = percent;
     }
 
+
     @Override
-    protected Money getDiscountAmount(Screening screening) {
+    public Money calculateDiscountAmount(Screening screening) {
         return screening.getMovieFee().times(this.percent);
     }
 }

@@ -1,15 +1,14 @@
 package moviereservation;
 
-public class AmountDiscountPolicy extends DiscountPolicy {
+public class AmountDiscountPolicy implements DiscountPolicy {
     private final Money discountAmount;
 
     public AmountDiscountPolicy(Money discountAmount, DiscountCondition... conditions) {
-        super(conditions);
         this.discountAmount = discountAmount;
     }
 
     @Override
-    protected Money getDiscountAmount(Screening screening) {
+    public Money calculateDiscountAmount(Screening screening) {
         return this.discountAmount;
     }
 }
